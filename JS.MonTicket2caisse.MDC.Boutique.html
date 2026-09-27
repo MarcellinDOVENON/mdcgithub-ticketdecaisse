@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>MDC Boutique - Ticket de caisse</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+    header h1 { margin: 0; font-size: 28px; font-weight: bold; }
+    header p { margin: 0; font-size: 16px; color: #555; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    button { margin: 10px 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #ticket { margin-top: 20px; font-family: monospace; white-space: pre; background: #f9f9f9; border: 1px dashed #333; padding: 10px; }
+    footer { text-align: center; margin-top: 30px; font-size: 16px; font-weight: bold; color: #333; }
+
+    /* Impression : masquer le formulaire et n'imprimer que le ticket + pied de page */
+    @media print {
+      form, header h2 { display: none; }
+      button { display: none; }
+      body { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>MDC Boutique</h1>
+  <p>Ticket de caisse</p>
+</header>
+
+<h2>Formulaire de caisse</h2>
+<form id="formCaisse">
+  <table>
+    <tr><th>Produit</th><th>Prix unitaire</th><th>Quantité</th></tr>
+    <tr><td>Couscous Ordinaire</td><td>600 F/kg</td><td><input type="number" id="qCouscousOrdinaire" min="0" value="0"></td></tr>
+    <tr><td>Couscous de Mil</td><td>450 F/kg (350 si ≥ 8)</td><td><input type="number" id="qCouscousMil" min="0" value="0"></td></tr>
+    <tr><td>Gari Lacté</td><td>500 F/kg</td><td><input type="number" id="qGariLacte" min="0" value="0"></td></tr>
+    <tr><td>Amon Soja</td><td>375 F/kg</td><td><input type="number" id="qAmonsoja" min="0" value="0"></td></tr>
+    <tr><td>Huile Zomi</td><td>975 F/L</td><td><input type="number" id="qHuileZomi" min="0" value="0"></td></tr>
+    <tr><td>Poisson Dowêvi</td><td>1200 F/kg</td><td><input type="number" id="qPoissonDowevi" min="0" value="0"></td></tr>
+    <tr><td>Alcool Sodabi</td><td>700 F/L</td><td><input type="number" id="qAlcoolSodabi" min="0" value="0"></td></tr>
+  </table>
+  <button type="submit">Générer le ticket</button>
+</form>
+
+<!-- Zone ticket -->
+<div id="ticket"></div>
+
+<!-- Bouton imprimer -->
+<button onclick="window.print()">Imprimer le ticket</button>
+
+<footer>
+  Merci pour votre achat
+</footer>
+
+<script>
+const prix = {
+  couscousOrdinaire: 600,
+  couscousMil: 450,
+  gariLacte: 500,
+  amonsoja: 375,
+  huileZomi: 975,
+  poissonDowevi: 1200,
+  alcoolSodabi: 700
+};
+
+document.getElementById("formCaisse").addEventListener("submit", function(e) {
+  e.preventDefault(); // Empêche le rechargement
+
+  let qCouscousOrdinaire = parseInt(document.getElementById("qCouscousOrdinaire").value) || 0;
+  let qCouscousMil = parseInt(document.getElementById("qCouscousMil").value) || 0;
+  let qGariLacte = parseInt(document.getElementById("qGariLacte").value) || 0;
+  let qAmonsoja = parseInt(document.getElementById("qAmonsoja").value) || 0;
+  let qHuileZomi = parseInt(document.getElementById("qHuileZomi").value) || 0;
+  let qPoissonDowevi = parseInt(document.getElementById("qPoissonDowevi").value) || 0;
+  let qAlcoolSodabi = parseInt(document.getElementById("qAlcoolSodabi").value) || 0;
+
+  let lignes = [];
+  let totalHT = 0;
+
+  if (qCouscousOrdinaire > 0) {
+    let total = prix.couscousOrdinaire * qCouscousOrdinaire;
+    lignes.push(`Couscous ordinaire - ${qCouscousOrdinaire} x ${prix.couscousOrdinaire} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qCouscousMil > 0) {
+    let prixApplique = (qCouscousMil >= 8) ? 350 : prix.couscousMil;
+    let total = prixApplique * qCouscousMil;
+    lignes.push(`Couscous de mil - ${qCouscousMil} x ${prixApplique} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qGariLacte > 0) {
+    let total = prix.gariLacte * qGariLacte;
+    lignes.push(`Gari lacté - ${qGariLacte} x ${prix.gariLacte} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qAmonsoja > 0) {
+    let total = prix.amonsoja * qAmonsoja;
+    lignes.push(`Amonsoja - ${qAmonsoja} x ${prix.amonsoja} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qHuileZomi > 0) {
+    let total = prix.huileZomi * qHuileZomi;
+    lignes.push(`Huile zomi - ${qHuileZomi} x ${prix.huileZomi} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qPoissonDowevi > 0) {
+    let total = prix.poissonDowevi * qPoissonDowevi;
+    lignes.push(`Poisson dowêvi - ${qPoissonDowevi} x ${prix.poissonDowevi} F = ${total} F`);
+    totalHT += total;
+  }
+
+  if (qAlcoolSodabi > 0) {
+    let total = prix.alcoolSodabi * qAlcoolSodabi;
+    lignes.push(`Alcool sodabi - ${qAlcoolSodabi} x ${prix.alcoolSodabi} F = ${total} F`);
+    totalHT += total;
+  }
+
+  let tva = totalHT * 0.18;
+  let totalTTC = totalHT + tva;
+
+  // Affichage DOM
+  document.getElementById("ticket").textContent =
+    "=================================\n" +
+    "         TICKET DE CAISSE        \n" +
+    "=================================\n" +
+    lignes.join("\n") + "\n" +
+    "---------------------------------\n" +
+    "TOTAL HT : ".padEnd(20) + totalHT + " F\n" +
+    "TVA (18%) : ".padEnd(20) + tva + " F\n" +
+    "TOTAL TTC : ".padEnd(20) + totalTTC + " F\n" +
+    "=================================\n" +
+    "Merci pour votre achat";
+});
+</script>
+
+</body>
+</html>

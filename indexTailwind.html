@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>MDC Boutique - Ticket de caisse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans m-5 print:m-0">
+
+  <header class="text-center mb-5 border-b-2 border-black pb-[10px]">
+    <h1 class="m-0 text-2xl font-bold">MDC Boutique</h1>
+    <p class="m-0 text-base text-gray-600">Ticket de caisse</p>
+  </header>
+
+  <h2 class="print:hidden">Formulaire de caisse</h2>
+  <form id="formCaisse" class="print:hidden">
+    <table class="w-full border-collapse mb-3.5">
+      <tr>
+        <th class="border border-black p-2 text-center bg-gray-100">Produit</th>
+        <th class="border border-black p-2 text-center bg-gray-100">Prix unitaire</th>
+        <th class="border border-black p-2 text-center bg-gray-100">Quantité</th>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Couscous Ordinaire</td>
+        <td class="border border-black p-2 text-center">600 F/kg</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qCouscousOrdinaire" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Couscous de Mil</td>
+        <td class="border border-black p-2 text-center">450 F/kg (350 si ≥ 8)</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qCouscousMil" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Gari Lacté</td>
+        <td class="border border-black p-2 text-center">500 F/kg</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qGariLacte" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Amon Soja</td>
+        <td class="border border-black p-2 text-center">375 F/kg</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qAmonsoja" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Huile Zomi</td>
+        <td class="border border-black p-2 text-center">975 F/L</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qHuileZomi" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Poisson Dowêvi</td>
+        <td class="border border-black p-2 text-center">1200 F/kg</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qPoissonDowevi" min="0" value="0">
+        </td>
+      </tr>
+      <tr>
+        <td class="border border-black p-2 text-center">Alcool Sodabi</td>
+        <td class="border border-black p-2 text-center">700 F/L</td>
+        <td class="border border-black p-2 text-center">
+          <input type="number" id="qAlcoolSodabi" min="0" value="0">
+        </td>
+      </tr>
+    </table>
+    <button type="submit" 
+            class="my-[10px] mx-[5px] py-[10px] px-[20px] text-base font-semibold border border-black rounded bg-blue-200 hover:bg-gray-300 cursor-pointer">
+      Générer le ticket
+    </button>
+  </form>
+
+  <!-- Zone ticket -->
+  <div id="ticket" class="mt-5 font-mono whitespace-pre bg-[#f9f9f9] border border-dashed border-[#333] p-[10px]">
+  </div>
+
+  <!-- Bouton imprimer -->
+  <button id="btnImprimer"
+          class="print:hidden my-[10px] mx-[5px] py-[10px] px-[20px] text-base font-semibold border border-black rounded bg-blue-200 hover:bg-gray-300 cursor-pointer">
+    Imprimer le ticket
+  </button>
+
+  <footer class="text-center mt-[30px] text-base font-bold text-[#333]">
+    Merci pour votre achat
+  </footer>
+
+  <!-- Import du script principal -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
